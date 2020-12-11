@@ -80,7 +80,6 @@ public class OpenCvActivity extends AppCompatActivity implements CameraBridgeVie
         @Override
         public void onCameraViewStarted(int width, int height) {
             mRgba = new Mat(height, width, CvType.CV_8UC4);
-
         }
 
         @Override
