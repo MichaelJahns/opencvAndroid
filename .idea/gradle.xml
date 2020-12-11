@@ -15,7 +15,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/java" />
-            <option value="$PROJECT_DIR$/../../../JAR/opencv/opencv-4.5.0-android-sdk/OpenCV-android-sdk/sdk" />
+            <option value="$PROJECT_DIR$/../../JAR/opencv/opencv-4.5.0-android-sdk/OpenCV-android-sdk/sdk" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

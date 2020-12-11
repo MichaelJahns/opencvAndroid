@@ -19,7 +19,10 @@ import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.JavaCameraView;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+
+import java.lang.annotation.Native;
 
 public class OpenCvActivity extends AppCompatActivity implements CameraBridgeViewBase.CvCameraViewListener2 {
 
@@ -33,6 +36,7 @@ public class OpenCvActivity extends AppCompatActivity implements CameraBridgeVie
             public void onManagerConnected(int status) {
                 switch (status) {
                     case LoaderCallbackInterface.SUCCESS: {
+                        System.loadLibrary("native-lib");
                         javaCameraView.enableView();
                         Log.d(TAG, "callback: openCV loaded successfully");
                         break;
@@ -72,8 +76,10 @@ public class OpenCvActivity extends AppCompatActivity implements CameraBridgeVie
             javaCameraView.setCvCameraViewListener(this);
         }
 
+        Mat mRgba;
         @Override
         public void onCameraViewStarted(int width, int height) {
+            mRgba = new Mat(height, width, CvType.CV_8UC4);
 
         }
 
@@ -84,7 +90,9 @@ public class OpenCvActivity extends AppCompatActivity implements CameraBridgeVie
 
         @Override
         public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
-            return inputFrame.rgba();
+            mRgba = inputFrame.rgba();
+            NativeClass.testFunction(mRgba.getNativeObjAddr());
+            return mRgba;
         }
 
         public void onResume(){
