@@ -90,7 +90,7 @@ public class OpenCvActivity extends AppCompatActivity implements CameraBridgeVie
         @Override
         public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
             mRgba = inputFrame.rgba();
-            NativeClass.testFunction(mRgba.getNativeObjAddr());
+            NativeClass.BGR2RGB(mRgba.getNativeObjAddr());
             return mRgba;
         }
 
