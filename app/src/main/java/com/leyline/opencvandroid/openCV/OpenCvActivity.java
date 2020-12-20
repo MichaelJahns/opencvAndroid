@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,10 +28,12 @@ public class OpenCvActivity extends AppCompatActivity implements CameraBridgeVie
 
     Mat mRgba, mRGBAT;
 
+    private static String filterType = "grayscale";
     private static final String TAG = "MIKEY";
     private static int activeCamera = CameraBridgeViewBase.CAMERA_ID_BACK;
     private static final int CAMERA_REQUEST_CODE = 100;
     JavaCameraView javaCameraView;
+    Button cycleLeft, cycleRight;
 
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -59,6 +62,21 @@ public class OpenCvActivity extends AppCompatActivity implements CameraBridgeVie
         setContentView(R.layout.activity_open_cv);
 
         javaCameraView = findViewById(R.id.java_camera_view);
+        cycleLeft = findViewById(R.id.btnCycleFilterLeft);
+        cycleRight = findViewById(R.id.btnCycleFilterRight);
+
+        cycleLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cycleGrayscale();
+            }
+        });
+        cycleRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cycleBGR2RGB();
+            }
+        });
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
@@ -104,7 +122,11 @@ public class OpenCvActivity extends AppCompatActivity implements CameraBridgeVie
     @Override
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
         mRgba = inputFrame.rgba();
-        NativeClass.BGR2RGB(mRgba.getNativeObjAddr());
+        if (filterType == "BGR2RGB") {
+            NativeClass.BGR2RGB(mRgba.getNativeObjAddr());
+        } else if (filterType == "grayscale") {
+            NativeClass.grayScale(mRgba.getNativeObjAddr());
+        }
         return mRgba;
     }
 
@@ -142,4 +164,11 @@ public class OpenCvActivity extends AppCompatActivity implements CameraBridgeVie
         }
     }
 
+    public static void cycleGrayscale() {
+        filterType = "grayscale";
+    }
+
+    public static void cycleBGR2RGB() {
+        filterType = "BGR2RGB";
+    }
 }
