@@ -1,0 +1,7 @@
+include ':app'
+rootProject.name = "Computer Vision"
+include ':java'
+
+def opencvsdk = 'C:\\Users\\jahns\\projects\\JAR\\opencv\\opencv-4.5.0-android-sdk\\OpenCV-android-sdk'
+include ':opencv'
+project(':opencv').projectDir = new File(opencvsdk + '/sdk')
